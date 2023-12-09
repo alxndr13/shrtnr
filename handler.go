@@ -30,7 +30,10 @@ func (a *App) shortenHandler(w http.ResponseWriter, r *http.Request) {
 		log.Println("url is empty")
 		IsUrlEmpty = true
 	}
-	short, err := a.shortenUrl(formUrl)
+
+	useTLD := r.FormValue("useTLD") == "on" // Assuming "on" is the value when the checkbox is checked
+
+	short, err := a.shortenUrl(formUrl, useTLD)
 	if err != nil {
 		log.Println("error generating a short code")
 		hasInternalError = true
