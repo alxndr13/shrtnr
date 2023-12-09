@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>shrtnr.click</title>
+    <meta name="description" content="your url shortener built by alxndr13"/>
+    <meta name="keywords" content="URL Shortener, shortener, url, link short"/>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/htmx.org@1.9.2" integrity="sha384-L6OqL9pRWyyFU3+/bjdSri+iIphTN/bvYyM37tICVyOJkWZLpP2vGn6VUEXgzg6h" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/clipboard@2/dist/clipboard.min.js"></script>
+    <link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"
+  integrity="sha512-HK5fgLBL+xu6dm/Ii3z4xhlSUyZgTT9tuc/hSrtw6uzJOvgRr2a9jyxxT1ely+B+xFAmJKVSTbpM/CuL7qxO8w=="
+  crossorigin="anonymous"
+/>
+</head>
+<header>
+  <h1 class="font-sans font-light text-6xl text-center">shrtnr</h1>
+</header>
+<body class="flex-col justify-center mx-auto">
+    <div class="text-center text-gray-600 m-4">shrtnr shortens or obfuscates your links and makes them more accessible</div>
+    {{ template "body" . }}
+</body>
+<footer class="text-center m-4">
+    <small>Made with 💕 in Mannheim, Germany.</small>
+</footer>
+</html>
+

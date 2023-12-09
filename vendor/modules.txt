@@ -1,0 +1,32 @@
+# github.com/asaskevich/govalidator v0.0.0-20210307081110-f21760c49a8d
+## explicit; go 1.13
+github.com/asaskevich/govalidator
+# github.com/cpuguy83/go-md2man/v2 v2.0.2
+## explicit; go 1.11
+github.com/cpuguy83/go-md2man/v2/md2man
+# github.com/davidmytton/url-verifier v1.0.0
+## explicit; go 1.19
+github.com/davidmytton/url-verifier
+# github.com/go-chi/chi/v5 v5.0.10
+## explicit; go 1.14
+github.com/go-chi/chi/v5
+github.com/go-chi/chi/v5/middleware
+# github.com/russross/blackfriday/v2 v2.1.0
+## explicit
+github.com/russross/blackfriday/v2
+# github.com/sqids/sqids-go v0.4.1
+## explicit; go 1.20
+github.com/sqids/sqids-go
+# github.com/urfave/cli/v2 v2.26.0
+## explicit; go 1.18
+github.com/urfave/cli/v2
+# github.com/xrash/smetrics v0.0.0-20201216005158-039620a65673
+## explicit
+github.com/xrash/smetrics
+# go.etcd.io/bbolt v1.3.8
+## explicit; go 1.17
+go.etcd.io/bbolt
+# golang.org/x/sys v0.13.0
+## explicit; go 1.17
+golang.org/x/sys/unix
+golang.org/x/sys/windows

@@ -1,0 +1,29 @@
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+
+version: '3'
+
+tasks:
+  default:
+    cmds:
+      - go run .
+    silent: true
+
+  air:
+    cmds:
+      - air
+    silent: true
+
+  container:
+    silent: true
+    cmds:
+      - podman build -t shrtnr .
+      - podman run -ti -v tmp:/data -p 8000:8000 shrtnr
+
+  deploy:
+    silent: true
+    cmds:
+      - ssh hetzner_inet docker rm -f shrtnr || true
+      - ssh hetzner_inet mkdir -p /home/hucka/temp_shrtnr
+      - rsync -avz . hetzner_inet:/home/hucka/temp_shrtnr/
+      - ssh hetzner_inet docker build -t shrtnr:latest /home/hucka/temp_shrtnr/
+      - ssh hetzner_inet docker run -d -v shrtnr:/data -p 2337:8000 -e SH_ROOT_URL="https://shrtnr.click" --name shrtnr shrtnr:latest

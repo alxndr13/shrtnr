@@ -1,0 +1,16 @@
+{{ define "body" }}
+<div class="mx-auto max-w-md">
+  <div class="flex-col gap-4 text-center justify-center mx-4">
+    <form hx-post="/shorten" hx-swap="innerHTML" hx-target="#content">
+      <label for="inputUrl" class="block mb-2">URL to shorten:</label>
+        <input type="text" name="inputUrl" id="inputUrl" class="border border-gray-300 w-full rounded-md px-4 py-2 outline-blue-500 text-gray-800" placeholder="https://alxndr13.xyz">
+        <div id="noteBlock" class="text-gray-500 text-sm">Needs to be a valid URL</div>
+        <button type="submit" class="bg-gradient-to-tr from-blue-300 to-blue-500 mt-4 px-6 py-3 rounded-md bg-blue-500 text-white shadow-md">
+            Generate
+        </button>
+    </form>
+    <div id="content" class="justify-center text-center">
+    </div>
+  </div>
+</div>
+{{ end }}
