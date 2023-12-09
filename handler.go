@@ -31,7 +31,7 @@ func (a *App) shortenHandler(w http.ResponseWriter, r *http.Request) {
 		IsUrlEmpty = true
 	}
 
-	useTLD := r.FormValue("useTLD") == "on" // Assuming "on" is the value when the checkbox is checked
+	useTLD := r.FormValue("useTLD") == "on"
 
 	short, err := a.shortenUrl(formUrl, useTLD)
 	if err != nil {
