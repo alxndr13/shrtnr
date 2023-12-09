@@ -23,22 +23,14 @@ func (a *App) shortenHandler(w http.ResponseWriter, r *http.Request) {
 	var hasInternalError bool = false
 	var hasValidUrl bool = true
 	var IsUrlEmpty bool = false
+	var short string
+	var AmountOfUrlsGenerated int
 
 	formUrl := r.PostFormValue("inputUrl")
 
 	if len(formUrl) == 0 {
 		log.Println("url is empty")
 		IsUrlEmpty = true
-	}
-	short, err := a.shortenUrl(formUrl)
-	if err != nil {
-		log.Println("error generating a short code")
-		hasInternalError = true
-	}
-	AmountOfUrlsGenerated, err := a.getAmountOfLinks()
-	if err != nil {
-		log.Println("error getting the amount of urls generated")
-		// we dont crash here, just leave it at 0
 	}
 
 	verifier := urlverifier.NewVerifier()
@@ -48,6 +40,21 @@ func (a *App) shortenHandler(w http.ResponseWriter, r *http.Request) {
 		fmt.Println("url isnt valid")
 		hasValidUrl = false
 	}
+	if hasValidUrl {
+
+		short, err = a.shortenUrl(formUrl)
+		if err != nil {
+			log.Println("error generating a short code")
+			hasInternalError = true
+		}
+
+		AmountOfUrlsGenerated, err = a.getAmountOfLinks()
+		if err != nil {
+			log.Println("error getting the amount of urls generated")
+			// we dont crash here, just leave it at 0
+		}
+	}
+
 	u := UrlData{Url: strings.Join([]string{a.RootUrl, "r/", short}, ""), Valid: hasValidUrl, AmountOfUrlsGenerated: AmountOfUrlsGenerated, InternalError: hasInternalError, UrlEmpty: IsUrlEmpty}
 
 	tmpl := template.Must(template.ParseFS(html, "pages/shortened.html"))
