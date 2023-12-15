@@ -3,8 +3,6 @@ package main
 import (
 	"embed"
 	"fmt"
-	"html/template"
-	"log"
 	"net/http"
 	"os"
 	"strings"
@@ -12,6 +10,8 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/urfave/cli/v2"
+
+	"github.com/charmbracelet/log"
 
 	bolt "go.etcd.io/bbolt"
 )
@@ -58,35 +58,34 @@ func main() {
 			},
 		},
 		Action: func(*cli.Context) error {
-			if !strings.HasSuffix(a.RootUrl, "/") {
-				a.RootUrl += "/"
-			}
-
-			err := a.createDatabaseIfNotExists()
-			if err != nil {
-				log.Fatal(err)
-			}
-
-			fmt.Printf("Starting Server on :%s\n", a.Port)
-
-			defaultHandler := func(w http.ResponseWriter, r *http.Request) {
-				tmpl := template.Must(template.ParseFS(html, "base.html", "pages/shortener.html"))
-				tmpl.Execute(w, nil)
-			}
-			r := chi.NewRouter()
-			r.Use(middleware.Logger)
-
-			// define handlers
-			r.Get("/", defaultHandler)
-			r.Get("/r/{id}", a.redirectHandler)
-			r.Post("/shorten", a.shortenHandler)
-
-			log.Fatal(http.ListenAndServe(fmt.Sprintf(":%s", a.Port), r))
-			return nil
+			return a.startApp()
 		},
 	}
 	if err := app.Run(os.Args); err != nil {
 		log.Fatal(err)
 	}
+}
 
+func (a *App) startApp() error {
+	if !strings.HasSuffix(a.RootUrl, "/") {
+		a.RootUrl += "/"
+	}
+
+	err := a.createDatabaseIfNotExists()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	log.Info("Starting Server", "port", a.Port)
+
+	r := chi.NewRouter()
+	r.Use(middleware.Logger)
+
+	// define handlers
+	r.Get("/", defaultHandler)
+	r.Get("/r/{id}", a.redirectHandler)
+	r.Post("/shorten", a.shortenHandler)
+
+	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%s", a.Port), r))
+	return nil
 }

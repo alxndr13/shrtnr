@@ -1,22 +1,21 @@
 package main
 
 import (
-	"fmt"
-	"log"
 	"strings"
 	"testing"
+
+	"github.com/charmbracelet/log"
 )
 
 var TestApp App
 
 func init() {
 	TestApp.DbPath = "shrtnr_test.db"
-	TestApp.Port = "8080"
-
 	err := TestApp.createDatabaseIfNotExists()
 	if err != nil {
 		log.Fatal(err)
 	}
+
 }
 
 func TestShortening(t *testing.T) {
@@ -36,7 +35,6 @@ func TestShortening(t *testing.T) {
 		}
 
 		split := strings.Split(shortenedUrl, "/")
-		fmt.Println(split[len(split)-1])
 
 		loadedUrl, err := TestApp.getFromDatabase(split[len(split)-1])
 		if err != nil {

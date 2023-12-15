@@ -1,11 +1,11 @@
 package main
 
 import (
-	"fmt"
 	"html/template"
-	"log"
 	"net/http"
 	"strings"
+
+	"github.com/charmbracelet/log"
 
 	urlverifier "github.com/davidmytton/url-verifier"
 	"github.com/go-chi/chi/v5"
@@ -19,6 +19,11 @@ type UrlData struct {
 	UrlEmpty              bool
 }
 
+func defaultHandler(w http.ResponseWriter, r *http.Request) {
+	tmpl := template.Must(template.ParseFS(html, "base.html", "pages/shortener.html"))
+	tmpl.Execute(w, nil)
+}
+
 func (a *App) shortenHandler(w http.ResponseWriter, r *http.Request) {
 	var hasInternalError bool = false
 	var hasValidUrl bool = true
@@ -29,7 +34,7 @@ func (a *App) shortenHandler(w http.ResponseWriter, r *http.Request) {
 	formUrl := r.PostFormValue("inputUrl")
 
 	if len(formUrl) == 0 {
-		log.Println("url is empty")
+		log.Info("url is empty")
 		IsUrlEmpty = true
 	}
 
@@ -37,20 +42,21 @@ func (a *App) shortenHandler(w http.ResponseWriter, r *http.Request) {
 	ret, err := verifier.Verify(formUrl)
 
 	if err != nil || !ret.IsURL {
-		fmt.Println("url isnt valid")
+		log.Warn("URL isn't valid", "url", formUrl)
 		hasValidUrl = false
 	}
 	if hasValidUrl {
 
 		short, err = a.shortenUrl(formUrl)
 		if err != nil {
-			log.Println("error generating a short code")
+			log.Warn("error generating a short code", "url", formUrl)
 			hasInternalError = true
 		}
+		log.Info("Generated short url", "shortCode", short, "originalUrl", formUrl)
 
 		AmountOfUrlsGenerated, err = a.getAmountOfLinks()
 		if err != nil {
-			log.Println("error getting the amount of urls generated")
+			log.Warn("error getting the amount of urls generated")
 			// we dont crash here, just leave it at 0
 		}
 	}

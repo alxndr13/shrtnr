@@ -31,7 +31,6 @@ func (a *App) getFromDatabase(shortCode string) (url string, err error) {
 		if len(result) == 0 {
 			return fmt.Errorf("no result in database")
 		}
-		fmt.Println("Result:", string(result))
 		url = string(result)
 		return nil
 	})
