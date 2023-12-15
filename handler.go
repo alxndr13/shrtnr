@@ -63,15 +63,16 @@ func (a *App) shortenHandler(w http.ResponseWriter, r *http.Request) {
 
 func (a *App) redirectHandler(w http.ResponseWriter, r *http.Request) {
 	shortCode := chi.URLParam(r, "id")
-	url, err := a.getFromDatabase(shortCode)
+	loadedUrl, err := a.getFromDatabase(shortCode)
 	if err != nil {
 		log.Printf("couldn't find %s in the database\n", shortCode)
 		tmpl := template.Must(template.ParseFS(html, "base.html", "pages/404.html"))
 		tmpl.Execute(w, nil)
 		return
 	}
-	if !strings.HasPrefix(url, "http://") || !strings.HasPrefix(url, "https://") {
-		url = "http://" + url
+	if !strings.HasPrefix(loadedUrl, "http://") && !strings.HasPrefix(loadedUrl, "https://") {
+		loadedUrl = "http://" + loadedUrl
 	}
-	http.Redirect(w, r, url, http.StatusPermanentRedirect)
+
+	http.Redirect(w, r, loadedUrl, http.StatusPermanentRedirect)
 }
