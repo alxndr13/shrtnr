@@ -62,7 +62,7 @@ func main() {
 				a.RootUrl += "/"
 			}
 
-			err := a.createDatabaseIfNotExists(a.DbPath)
+			err := a.createDatabaseIfNotExists()
 			if err != nil {
 				log.Fatal(err)
 			}

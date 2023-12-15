@@ -43,8 +43,8 @@ func (a *App) getFromDatabase(shortCode string) (url string, err error) {
 
 }
 
-func (a *App) createDatabaseIfNotExists(path string) error {
-	db, err := bolt.Open(path, 0600, nil)
+func (a *App) createDatabaseIfNotExists() error {
+	db, err := bolt.Open(a.DbPath, 0600, nil)
 	if err != nil {
 		return err
 	}
